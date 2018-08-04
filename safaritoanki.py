@@ -23,6 +23,7 @@ Original order
  'Personal Note']
  """
 neworder = [8,7,0,1,2,4,5,6,3]
+missing = []
 
 for row in range(len(mylist)):
     mylist[row] = [mylist[row][i] for i in neworder]
@@ -30,7 +31,12 @@ for row in range(len(mylist)):
         note,tag = mylist[row][0].split(' #')
         mylist[row][0] = note
         mylist[row].append(tag)
+    else:
+        print("Missing tags on these notes")
+        missing.append(mylist[row])
 
+for row in missing:
+    print(row[-2])
 
 with open('anki-flashcards.csv','w', newline='') as csvfile:
     wr = csv.writer(csvfile)
