@@ -7,3 +7,8 @@ Export highlights from Safaribooks (safari-annotations-export.csv) and run
 
 
 This should output a file named 'anki-flashcards.csv' that you can import in Anki
+
+When highlighting in Safaribooks you create the question as a note. 
+You can also add a tag after the question i.e
+
+    What are the different LSA Types? #OSPF
