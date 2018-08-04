@@ -18,3 +18,5 @@ Multiple tags are also supported
     What are the different LSA Types? #OSPF IGP
 
 This will add two tags, OSPF and IGP to the flashcard
+
+Here is an example of a note https://www.safaribooksonline.com/a/routing-tcpip-volume/17436430/
