@@ -32,11 +32,12 @@ for row in range(len(mylist)):
         mylist[row][0] = note
         mylist[row].append(tag)
     else:
-        print("Missing tags on these notes")
         missing.append(mylist[row])
 
-for row in missing:
-    print(row[-2])
+if missing:
+    print("Missing tags on these notes")
+    for row in missing:
+        print(row[-2])
 
 with open('anki-flashcards.csv','w', newline='') as csvfile:
     wr = csv.writer(csvfile)
