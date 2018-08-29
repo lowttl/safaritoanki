@@ -28,7 +28,11 @@ missing = []
 for row in range(len(mylist)):
     mylist[row] = [mylist[row][i] for i in neworder]
     if ' #' in mylist[row][0]:
-        note,tag = mylist[row][0].split(' #')
+        try:
+            note,tag = mylist[row][0].split(' #')
+        except ValueError:
+            print("Error on following notes:")
+            print(mylist[row][0])
         mylist[row][0] = note
         mylist[row].append(tag)
     else:
