@@ -28,6 +28,10 @@ missing = []
 for row in range(len(mylist)):
     mylist[row] = [mylist[row][i] for i in neworder]
     if ' #' in mylist[row][0]:
+        if 'url:' in mylist[row][0]:
+            url = mylist[row][0].split(' url:')[1]
+            mylist[row][0] = mylist[row][0].split('url:')[0]
+            mylist[row][1] = mylist[row][1] + ' ' + '<div><img src="{}"><br></div>'.format(url)
         try:
             note,tag = mylist[row][0].split(' #')
         except ValueError:
