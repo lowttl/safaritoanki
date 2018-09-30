@@ -1,14 +1,15 @@
 import csv
 with open('safari-annotations-export.csv') as csvfile:
     spamreader = csv.reader(csvfile)
-    mylist = []
+    standard = []
+    cloze = []
     for row in spamreader:
-        if row[-1] == '':
+        if row[-1] == '' or "Book Title" in row:
             continue
-        mylist.append(row)
-
-# Remove headline
-mylist.pop(0)
+        elif '{{c' in row[-1]:
+            cloze.append(row)
+        else:
+            standard.append(row)
 
 """
 Original order
@@ -25,22 +26,39 @@ Original order
 neworder = [8,7,0,1,2,4,5,6,3]
 missing = []
 
-for row in range(len(mylist)):
-    mylist[row] = [mylist[row][i] for i in neworder]
-    if ' #' in mylist[row][0]:
-        if 'url:' in mylist[row][0]:
-            url = mylist[row][0].split(' url:')[1]
-            mylist[row][0] = mylist[row][0].split('url:')[0]
-            mylist[row][1] = mylist[row][1] + ' ' + '<div><img src="{}"><br></div>'.format(url)
+for row in range(len(standard)):
+    standard[row] = [standard[row][i] for i in neworder]
+    if ' #' in standard[row][0]:
+        if 'url:' in standard[row][0]:
+            url = standard[row][0].split(' url:')[1]
+            standard[row][0] = standard[row][0].split('url:')[0]
+            standard[row][1] = standard[row][1] + ' ' + '<div><img src="{}"><br></div>'.format(url)
         try:
-            note,tag = mylist[row][0].split(' #')
+            note,tag = standard[row][0].split(' #')
         except ValueError:
             print("Error on following notes:")
-            print(mylist[row][0])
-        mylist[row][0] = note
-        mylist[row].append(tag)
+            print(standard[row][0])
+        standard[row][0] = note
+        standard[row].append(tag)
     else:
-        missing.append(mylist[row])
+        missing.append(standard[row])
+
+for row in range(len(cloze)):
+    cloze[row] = [cloze[row][i] for i in neworder]
+    if ' #' in cloze[row][0]:
+        if 'url:' in cloze[row][0]:
+            url = cloze[row][0].split(' url:')[1]
+            cloze[row][0] = cloze[row][0].split('url:')[0]
+            cloze[row][1] = cloze[row][1] + ' ' + '<div><img src="{}"><br></div>'.format(url)
+        try:
+            note,tag = cloze[row][0].split(' #')
+        except ValueError:
+            print("Error on following notes:")
+            print(cloze[row][0])
+        cloze[row][0] = note
+        cloze[row].append(tag)
+    else:
+        missing.append(cloze[row])
 
 if missing:
     print("Missing tags on these notes")
@@ -49,4 +67,8 @@ if missing:
 
 with open('anki-flashcards.csv','w', newline='') as csvfile:
     wr = csv.writer(csvfile)
-    wr.writerows(mylist)
+    wr.writerows(standard)
+
+with open('anki-flashcards-cloze.csv','w', newline='') as csvfile:
+    wr = csv.writer(csvfile)
+    wr.writerows(cloze)
