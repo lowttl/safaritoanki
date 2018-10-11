@@ -7,8 +7,8 @@ header = None
 
 
 with open('safari-annotations-export.csv') as csvfile:
-    linereader = csv.reader(csvfile,delimiter=',', quotechar='"')
-    for i,row in enumerate(linereader):
+    linereader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    for i, row in enumerate(linereader):
         if not header:
             header = row
             continue
@@ -24,10 +24,13 @@ with open('safari-annotations-export.csv') as csvfile:
         # Create tags and add image url if it exists
         if ' #' in row_data['Personal Note']:
             if ' url:' in row_data['Personal Note']:
-                row_data['Personal Note'], row_data['Image'] = row_data['Personal Note'].split(' url:')
-                row_data['Personal Note'], row_data['Tags'] = row_data['Personal Note'].split(' #')
+                (row_data['Personal Note'], row_data['Image']) = \
+                    row_data['Personal Note'].split(' url:')
+                (row_data['Personal Note'], row_data['Tags']) = \
+                    row_data['Personal Note'].split(' #')
             else:
-                row_data['Personal Note'], row_data['Tags'] = row_data['Personal Note'].split(' #')
+                (row_data['Personal Note'], row_data['Tags']) = \
+                    row_data['Personal Note'].split(' #')
         else:
             missing.append(row_data['Highlight URL'])
 
@@ -36,16 +39,16 @@ with open('safari-annotations-export.csv') as csvfile:
         else:
             data.append(row_data)
 
-keys = ['Personal Note','Highlight','Book Title', 'Authors', 'Chapter Title',
-        'Book URL', 'Chapter URL', 'Highlight URL', 'Date of Highlight', 
+keys = ['Personal Note', 'Highlight', 'Book Title', 'Authors', 'Chapter Title',
+        'Book URL', 'Chapter URL', 'Highlight URL', 'Date of Highlight',
         'Cover', 'Image', 'Tags']
 
-with open('anki.csv','w') as f:
-    w = csv.DictWriter(f,keys)
+with open('anki.csv', 'w') as f:
+    w = csv.DictWriter(f, keys)
     w.writerows(data)
 
-with open('anki-cloze.csv','w') as f:
-    w = csv.DictWriter(f,keys)
+with open('anki-cloze.csv', 'w') as f:
+    w = csv.DictWriter(f, keys)
     w.writerows(cloze)
 
 if missing:
