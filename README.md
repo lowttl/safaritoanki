@@ -19,4 +19,4 @@ Multiple tags are also supported
 
 This will add two tags, OSPF and IGP to the flashcard
 
-Here is an example of a note https://www.safaribooksonline.com/a/routing-tcpip-volume/17436430/
+Here is an example of a note https://www.safaribooksonline.com/a/aws-certified-solutions/19190356/
