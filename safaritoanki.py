@@ -1,9 +1,13 @@
 import csv
+import requests
+import os.path
 
 data = []
 cloze = []
 missing = []
 header = None
+path = ('/Users/rickard/Library/Application Support/'
+        'Anki2/Rickard/collection.media/')
 
 
 with open('safari-annotations-export.csv') as csvfile:
@@ -19,7 +23,13 @@ with open('safari-annotations-export.csv') as csvfile:
 
         # Create cover key/value
         cover_url = 'https://www.safaribooksonline.com/library/cover/'
-        row_data['Cover'] = cover_url + row_data['Book URL'].split('/')[-2]
+        full_url = cover_url + row_data['Book URL'].split('/')[-2]
+        row_data['Cover'] = row_data['Book URL'].split('/')[-2] + '.jpg'
+        filename = path + row_data['Cover']
+        if not os.path.isfile(filename):
+            r = requests.get(full_url, allow_redirects=True)
+            with open(filename, 'wb') as f:
+                f.write(r.content)
 
         # Create tags and add image url if it exists
         if ' #' in row_data['Personal Note']:
@@ -38,6 +48,16 @@ with open('safari-annotations-export.csv') as csvfile:
             cloze.append(row_data)
         else:
             data.append(row_data)
+
+        if 'Image' in row_data.keys():
+            # Download images
+            full_url = row_data['Image']
+            filename = path + row_data['Image'].split('/')[-1]
+            row_data['Image'] = row_data['Image'].split('/')[-1]
+            if not os.path.isfile(filename):
+                r = requests.get(full_url, allow_redirects=True)
+                with open(filename, 'wb') as f:
+                    f.write(r.content)
 
 keys = ['Personal Note', 'Highlight', 'Book Title', 'Authors', 'Chapter Title',
         'Book URL', 'Chapter URL', 'Highlight URL', 'Date of Highlight',
