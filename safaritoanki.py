@@ -39,8 +39,11 @@ with open('safari-annotations-export.csv') as csvfile:
                 (row_data['Personal Note'], row_data['Tags']) = \
                     row_data['Personal Note'].split(' #')
             else:
-                (row_data['Personal Note'], row_data['Tags']) = \
-                    row_data['Personal Note'].split(' #')
+                try:
+                    (row_data['Personal Note'], row_data['Tags']) = row_data['Personal Note'].split(' #')
+                except:
+                   print(row_data['Personal Note'])
+                   raise ValueError
         else:
             missing.append(row_data['Highlight URL'])
 
