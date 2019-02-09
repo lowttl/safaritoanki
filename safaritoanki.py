@@ -6,8 +6,8 @@ data = []
 cloze = []
 missing = []
 header = None
-path = ('/Users/rickard/Library/Application Support/'
-        'Anki2/Rickard/collection.media/')
+paths = ('/Users/rickard/Library/Application Support/'
+        'Anki2/Rickard/collection.media/','/Users/rickard/git/safaritoanki/media/')
 
 
 with open('safari-annotations-export.csv') as csvfile:
@@ -25,11 +25,12 @@ with open('safari-annotations-export.csv') as csvfile:
         cover_url = 'https://www.safaribooksonline.com/library/cover/'
         full_url = cover_url + row_data['Book URL'].split('/')[-2]
         row_data['Cover'] = row_data['Book URL'].split('/')[-2] + '.jpg'
-        filename = path + row_data['Cover']
-        if not os.path.isfile(filename):
-            r = requests.get(full_url, allow_redirects=True)
-            with open(filename, 'wb') as f:
-                f.write(r.content)
+        for path in paths:
+            filename = path + row_data['Cover']
+            if not os.path.isfile(filename):
+                r = requests.get(full_url, allow_redirects=True)
+                with open(filename, 'wb') as f:
+                    f.write(r.content)
 
         # Create tags and add image url if it exists
         if ' #' in row_data['Personal Note']:
@@ -55,12 +56,13 @@ with open('safari-annotations-export.csv') as csvfile:
         if 'Image' in row_data.keys():
             # Download images
             full_url = row_data['Image']
-            filename = path + row_data['Image'].split('/')[-1]
             row_data['Image'] = row_data['Image'].split('/')[-1]
-            if not os.path.isfile(filename):
-                r = requests.get(full_url, allow_redirects=True)
-                with open(filename, 'wb') as f:
-                    f.write(r.content)
+            for path in paths:
+                filename = path + row_data['Image']
+                if not os.path.isfile(filename):
+                    r = requests.get(full_url, allow_redirects=True)
+                    with open(filename, 'wb') as f:
+                        f.write(r.content)
 
 keys = ['Personal Note', 'Highlight', 'Book Title', 'Authors', 'Chapter Title',
         'Book URL', 'Chapter URL', 'Highlight URL', 'Date of Highlight',
