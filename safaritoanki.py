@@ -48,21 +48,24 @@ with open('safari-annotations-export.csv') as csvfile:
         else:
             missing.append(row_data['Highlight URL'])
 
-        if '{{c' in row_data['Personal Note']:
-            cloze.append(row_data)
-        else:
-            data.append(row_data)
 
         if 'Image' in row_data.keys():
             # Download images
             full_url = row_data['Image']
             row_data['Image'] = row_data['Image'].split('/')[-1]
             for path in paths:
-                filename = path + row_data['Image']
+                filename = path + row_data['Book URL'].split('/')[-2] + row_data['Image']
                 if not os.path.isfile(filename):
                     r = requests.get(full_url, allow_redirects=True)
                     with open(filename, 'wb') as f:
                         f.write(r.content)
+            row_data['Image'] = row_data['Book URL'].split('/')[-2] + row_data['Image']
+
+
+        if '{{c' in row_data['Personal Note']:
+            cloze.append(row_data)
+        else:
+            data.append(row_data)
 
 keys = ['Personal Note', 'Highlight', 'Book Title', 'Authors', 'Chapter Title',
         'Book URL', 'Chapter URL', 'Highlight URL', 'Date of Highlight',
