@@ -18,8 +18,7 @@ data = []
 cloze = []
 missing = []
 header = None
-paths = ('/Users/rickard/Library/Application Support/'
-        'Anki2/Rickard/collection.media/','/Users/rickard/git/safaritoanki/media/')
+paths = ('/Users/rickard/Library/Application Support/Anki2/Rickard/collection.media/','/Users/rickard/git/safaritoanki/media/')
 
 
 with open('safari-annotations-export.csv') as csvfile:
