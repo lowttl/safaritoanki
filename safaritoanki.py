@@ -1,6 +1,18 @@
 import csv
+import glob
 import requests
 import os.path
+import time
+import webbrowser
+
+# Download highlights
+for fl in glob.glob('/Users/rickard/Downloads/safari-annotations-export*'):
+    os.remove(fl)
+webbrowser.open('https://www.safaribooksonline.com/a/export/csv/')
+time.sleep(3)
+
+os.rename('/Users/rickard/Downloads/safari-annotations-export.csv','./safari-annotations-export.csv')
+
 
 data = []
 cloze = []
